@@ -42,34 +42,44 @@ st.markdown("""
         font-size: 1rem !important;
         padding: 12px 16px !important;
     }
+    .stTextInput > div > div > input::placeholder {
+        color: #9ca3af !important;
+        opacity: 1 !important;
+    }
     .stTextInput > div > div > input:focus {
         border-color: #00ff88 !important;
         box-shadow: 0 0 8px #00ff8855 !important;
     }
 
     /* 전송 버튼 */
-    div[data-testid="column"]:last-child .stButton > button {
-        background-color: #00ff88;
-        color: #0d1117;
-        font-weight: 700;
-        border: none;
-        border-radius: 10px;
+    div[data-testid="column"]:last-child .stFormSubmitButton > button {
+        background-color: #00ff88 !important;
+        color: #0d1117 !important;
+        font-weight: 700 !important;
+        border: none !important;
+        border-radius: 10px !important;
         height: 48px;
         width: 100%;
-        font-size: 1rem;
+        font-size: 1rem !important;
         margin-top: 28px;
     }
-    div[data-testid="column"]:last-child .stButton > button:hover {
-        background-color: #00cc6a;
+    div[data-testid="column"]:last-child .stFormSubmitButton > button:hover {
+        background-color: #00cc6a !important;
+        color: #0d1117 !important;
     }
 
     /* 초기화 버튼 */
-    div[data-testid="column"]:first-child .stButton > button {
-        background-color: transparent;
-        color: #6b7280;
-        border: 1px solid #374151;
-        border-radius: 8px;
-        font-size: 0.82rem;
+    div[data-testid="column"]:first-child .stFormSubmitButton > button {
+        background-color: #1f2937 !important;
+        color: #d1d5db !important;
+        border: 1px solid #4b5563 !important;
+        border-radius: 8px !important;
+        font-size: 0.82rem !important;
+        margin-top: 28px;
+    }
+    div[data-testid="column"]:first-child .stFormSubmitButton > button:hover {
+        background-color: #374151 !important;
+        color: #f9fafb !important;
     }
 
     /* 채팅 메시지 */
@@ -124,7 +134,7 @@ if "input_key" not in st.session_state:
 st.title("📈 주식 AI 어시스턴트")
 
 # ── 입력 영역 (중앙 고정) ──────────────────────────────────────────────────────
-st.markdown('<div class="input-area"><span class="input-label">💬 질문 입력</span></div>', unsafe_allow_html=True)
+st.markdown('<div class="input-area"><span class="input-label">💬 주식에 관한 모든 것을 질문하세요</span></div>', unsafe_allow_html=True)
 
 with st.form(key=f"chat_form_{st.session_state.input_key}", clear_on_submit=True):
     user_input = st.text_input(
