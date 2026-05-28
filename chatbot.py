@@ -53,22 +53,20 @@ st.markdown("""
 
     /* 전송 버튼 */
     button[data-testid="baseButton-secondaryFormSubmit"] {
-        background-color: #ffffff !important;
-        color: #00aa55 !important;
+        background-color: #00aa55 !important;
+        color: #ffffff !important;
         font-weight: 600 !important;
         border: 1.5px solid #00aa55 !important;
         border-radius: 8px !important;
         font-size: 0.88rem !important;
         padding: 4px 16px !important;
-        min-height: unset !important;
-        height: auto !important;
     }
     button[data-testid="baseButton-secondaryFormSubmit"]:hover,
     button[data-testid="baseButton-secondaryFormSubmit"]:active,
     button[data-testid="baseButton-secondaryFormSubmit"]:focus {
-        background-color: #00aa55 !important;
+        background-color: #007a3d !important;
         color: #ffffff !important;
-        border-color: #00aa55 !important;
+        border-color: #007a3d !important;
     }
 
     /* 채팅 메시지 */
