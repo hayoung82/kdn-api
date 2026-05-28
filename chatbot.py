@@ -51,26 +51,35 @@ st.markdown("""
         box-shadow: 0 0 8px #00ff8855 !important;
     }
 
-    /* 전송 버튼 */
+    /* 버튼 공통 */
     .stFormSubmitButton button,
     .stFormSubmitButton > div > button {
-        background-color: #00aa55 !important;
-        color: #ffffff !important;
-        font-weight: 600 !important;
-        border: 1.5px solid #00aa55 !important;
         border-radius: 8px !important;
         font-size: 0.88rem !important;
+        font-weight: 600 !important;
         padding: 4px 16px !important;
     }
-    .stFormSubmitButton button:hover,
-    .stFormSubmitButton button:active,
-    .stFormSubmitButton button:focus,
-    .stFormSubmitButton > div > button:hover,
-    .stFormSubmitButton > div > button:active,
-    .stFormSubmitButton > div > button:focus {
-        background-color: #007a3d !important;
+
+    /* 입력 버튼 (오른쪽) */
+    div[data-testid="column"]:last-child .stFormSubmitButton button {
+        background-color: #00aa55 !important;
         color: #ffffff !important;
+        border: 1.5px solid #00aa55 !important;
+    }
+    div[data-testid="column"]:last-child .stFormSubmitButton button:hover {
+        background-color: #007a3d !important;
         border-color: #007a3d !important;
+    }
+
+    /* 초기화 버튼 (왼쪽) */
+    div[data-testid="column"]:first-child .stFormSubmitButton button {
+        background-color: #1f2937 !important;
+        color: #9ca3af !important;
+        border: 1px solid #374151 !important;
+    }
+    div[data-testid="column"]:first-child .stFormSubmitButton button:hover {
+        background-color: #374151 !important;
+        color: #e5e7eb !important;
     }
 
     /* 채팅 메시지 */
@@ -141,6 +150,31 @@ if "messages" not in st.session_state:
 if "input_key" not in st.session_state:
     st.session_state.input_key = 0
 
+# ── 사이드바: 이전 질문 리스트 ───────────────────────────────────────────────
+with st.sidebar:
+    st.markdown("### 📋 이전 질문 목록")
+    questions = [m["content"] for m in st.session_state.messages if m["role"] == "user"]
+    if questions:
+        for i, q in enumerate(reversed(questions), 1):
+            st.markdown(f"""
+            <div style="
+                background-color:#161b22;
+                border:1px solid #1f2937;
+                border-radius:8px;
+                padding:8px 12px;
+                margin-bottom:6px;
+                font-size:0.82rem;
+                color:#9ca3af;
+                overflow:hidden;
+                text-overflow:ellipsis;
+                white-space:nowrap;
+            ">
+            {i}. {q[:40] + '...' if len(q) > 40 else q}
+            </div>
+            """, unsafe_allow_html=True)
+    else:
+        st.markdown('<p style="color:#4b5563; font-size:0.82rem;">아직 질문이 없습니다.</p>', unsafe_allow_html=True)
+
 # ── 헤더 ──────────────────────────────────────────────────────────────────────
 st.title("📈 주식 AI 어시스턴트")
 
@@ -153,9 +187,16 @@ with st.form(key=f"chat_form_{st.session_state.input_key}", clear_on_submit=True
         placeholder="예) 삼성전자 지금 사도 될까요?  /  PER이 뭔가요?  /  오늘 시장 분위기 어때요?",
         label_visibility="collapsed",
     )
-    col_spacer, col_btn = st.columns([5, 1])
+    col_reset, col_spacer, col_btn = st.columns([1, 4, 1])
+    with col_reset:
+        reset = st.form_submit_button("🔄 초기화", type="secondary")
     with col_btn:
         submitted = st.form_submit_button("입력", type="secondary")
+
+if reset:
+    st.session_state.messages = [st.session_state.messages[0]]
+    st.session_state.input_key += 1
+    st.rerun()
 
 if submitted and user_input.strip():
     st.session_state.messages.append({"role": "user", "content": user_input.strip()})
