@@ -56,38 +56,6 @@ st.markdown("""
         box-shadow: 0 0 8px #00ff8855 !important;
     }
 
-    /* 버튼 공통 */
-    .stFormSubmitButton button,
-    .stFormSubmitButton > div > button {
-        border-radius: 8px !important;
-        font-size: 0.88rem !important;
-        font-weight: 600 !important;
-        padding: 4px 16px !important;
-    }
-
-    /* 입력 버튼 (오른쪽) */
-    div[data-testid="column"]:last-child .stFormSubmitButton button {
-        background-color: #161b22 !important;
-        color: #00ff88 !important;
-        border: 1.5px solid #00ff88 !important;
-    }
-    div[data-testid="column"]:last-child .stFormSubmitButton button:hover {
-        background-color: #00aa55 !important;
-        color: #ffffff !important;
-        border-color: #00aa55 !important;
-    }
-
-    /* 초기화 버튼 (왼쪽) */
-    div[data-testid="column"]:first-child .stFormSubmitButton button {
-        background-color: #161b22 !important;
-        color: #00ff88 !important;
-        border: 1.5px solid #00ff88 !important;
-    }
-    div[data-testid="column"]:first-child .stFormSubmitButton button:hover {
-        background-color: #1f2937 !important;
-        color: #00ff88 !important;
-        border-color: #00ff88 !important;
-    }
 
     /* 채팅 메시지 */
     .stChatMessage { background-color: #161b22 !important; border-radius: 12px; }
