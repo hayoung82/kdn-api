@@ -164,10 +164,10 @@ with st.form(key=f"chat_form_{st.session_state.input_key}", clear_on_submit=True
         label_visibility="collapsed",
     )
     col_reset, col_spacer, col_btn = st.columns([1, 4, 1])
-    with col_reset:
-        reset = st.form_submit_button("초기화", type="secondary", use_container_width=True)
     with col_btn:
         submitted = st.form_submit_button("입력", type="secondary", use_container_width=True)
+    with col_reset:
+        reset = st.form_submit_button("초기화", type="secondary", use_container_width=True)
 
 components.html("""
 <script>
