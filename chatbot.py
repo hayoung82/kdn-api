@@ -51,35 +51,38 @@ st.markdown("""
         box-shadow: 0 0 8px #00ff8855 !important;
     }
 
-    /* 전송 버튼 */
-    div[data-testid="column"]:last-child .stFormSubmitButton > button {
+    /* 전송 버튼 (primary) */
+    button[data-testid="baseButton-primaryFormSubmit"] {
         background-color: #00ff88 !important;
         color: #0d1117 !important;
         font-weight: 700 !important;
         border: none !important;
         border-radius: 10px !important;
-        height: 48px;
-        width: 100%;
         font-size: 1rem !important;
-        margin-top: 28px;
+        width: 100%;
     }
-    div[data-testid="column"]:last-child .stFormSubmitButton > button:hover {
+    button[data-testid="baseButton-primaryFormSubmit"]:hover,
+    button[data-testid="baseButton-primaryFormSubmit"]:active,
+    button[data-testid="baseButton-primaryFormSubmit"]:focus {
         background-color: #00cc6a !important;
         color: #0d1117 !important;
     }
 
-    /* 초기화 버튼 */
-    div[data-testid="column"]:first-child .stFormSubmitButton > button {
+    /* 초기화 버튼 (secondary) */
+    button[data-testid="baseButton-secondaryFormSubmit"] {
         background-color: #1f2937 !important;
         color: #d1d5db !important;
         border: 1px solid #4b5563 !important;
         border-radius: 8px !important;
         font-size: 0.82rem !important;
-        margin-top: 28px;
+        width: 100%;
     }
-    div[data-testid="column"]:first-child .stFormSubmitButton > button:hover {
+    button[data-testid="baseButton-secondaryFormSubmit"]:hover,
+    button[data-testid="baseButton-secondaryFormSubmit"]:active,
+    button[data-testid="baseButton-secondaryFormSubmit"]:focus {
         background-color: #374151 !important;
         color: #f9fafb !important;
+        border-color: #6b7280 !important;
     }
 
     /* 채팅 메시지 */
@@ -107,9 +110,18 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# API 초기화
-api_key = st.secrets.get("OPENAI_API_KEY") or os.getenv("OPENAI_API_KEY")
-model = st.secrets.get("OPENAI_MODEL") or os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+# API 초기화 (Streamlit Cloud secrets 우선, 없으면 .env)
+try:
+    api_key = st.secrets["OPENAI_API_KEY"]
+    model = st.secrets.get("OPENAI_MODEL", "gpt-4o-mini")
+except Exception:
+    api_key = os.getenv("OPENAI_API_KEY")
+    model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+
+if not api_key:
+    st.error("OPENAI_API_KEY가 설정되지 않았습니다. Streamlit Cloud Secrets 또는 .env 파일을 확인하세요.")
+    st.stop()
+
 client = OpenAI(api_key=api_key)
 
 SYSTEM_PROMPT = """당신은 전문 주식 및 투자 AI 어시스턴트입니다. 다음 역할을 수행합니다:
@@ -144,9 +156,9 @@ with st.form(key=f"chat_form_{st.session_state.input_key}", clear_on_submit=True
     )
     col_reset, col_spacer, col_send = st.columns([2, 5, 2])
     with col_reset:
-        reset = st.form_submit_button("🔄 초기화")
+        reset = st.form_submit_button("🔄 초기화", type="secondary")
     with col_send:
-        submitted = st.form_submit_button("전송 ▶")
+        submitted = st.form_submit_button("전송 ▶", type="primary")
 
 if reset:
     st.session_state.messages = [st.session_state.messages[0]]
