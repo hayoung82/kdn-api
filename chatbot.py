@@ -154,7 +154,7 @@ with st.form(key=f"chat_form_{st.session_state.input_key}", clear_on_submit=True
     )
     col_spacer, col_btn = st.columns([5, 1])
     with col_btn:
-        submitted = st.form_submit_button("전송 ▶", type="secondary")
+        submitted = st.form_submit_button("입력", type="secondary")
 
 if submitted and user_input.strip():
     st.session_state.messages.append({"role": "user", "content": user_input.strip()})
