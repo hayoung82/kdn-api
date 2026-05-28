@@ -76,17 +76,15 @@ st.markdown("""
     /* 채팅 메시지 */
     .stChatMessage { background-color: #161b22 !important; border-radius: 12px; }
 
-    .hint-box {
-        background-color: #161b22;
-        border: 1px solid #1f2937;
+    .metric-box {
+        background: linear-gradient(135deg, #161b22, #1f2937);
+        border: 1px solid #00ff8833;
         border-radius: 10px;
-        padding: 10px 16px;
-        margin-bottom: 6px;
-        font-size: 0.83rem;
-        color: #6b7280;
-        cursor: pointer;
+        padding: 12px 16px;
+        margin-bottom: 8px;
+        font-size: 0.85rem;
+        color: #9ca3af;
     }
-    .hint-box b { color: #00cc6a; }
 
     .footer {
         text-align: center;
@@ -168,17 +166,13 @@ if submitted and user_input.strip():
     st.session_state.input_key += 1
     st.rerun()
 
-# ── 대화 없을 때 예시 힌트 ────────────────────────────────────────────────────
-if len(st.session_state.messages) == 1:
-    st.markdown("**이런 질문을 해보세요**")
-    hints = [
-        ("📊", "종목 분석", "삼성전자 지금 매수 타이밍인가요?"),
-        ("📖", "용어 설명", "PER, PBR, EPS 차이가 뭔가요?"),
-        ("🌐", "시황 분석", "미국 금리 인상이 한국 주식에 미치는 영향은?"),
-        ("💼", "투자 전략", "1000만원으로 분산투자 어떻게 하나요?"),
-    ]
-    for icon, tag, hint in hints:
-        st.markdown(f'<div class="hint-box">{icon} <b>[{tag}]</b> {hint}</div>', unsafe_allow_html=True)
+# ── 예시 힌트 (항상 표시) ────────────────────────────────────────────────────
+st.markdown("""
+<div class="metric-box">
+💡 <b>이런 걸 물어보세요</b> &nbsp;|&nbsp;
+삼성전자 주가 전망 &nbsp;·&nbsp; PER이 뭐야? &nbsp;·&nbsp; 지금 시장 상황 어때? &nbsp;·&nbsp; 분산투자 전략 알려줘
+</div>
+""", unsafe_allow_html=True)
 
 # ── 대화 히스토리 ─────────────────────────────────────────────────────────────
 history = [m for m in st.session_state.messages if m["role"] != "system"]
