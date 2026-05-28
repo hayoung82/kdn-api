@@ -125,6 +125,13 @@ if "messages" not in st.session_state:
     st.session_state.messages = [{"role": "system", "content": SYSTEM_PROMPT}]
 if "input_key" not in st.session_state:
     st.session_state.input_key = 0
+if "pending_input" not in st.session_state:
+    st.session_state.pending_input = ""
+
+def on_enter():
+    val = st.session_state.get(f"input_{st.session_state.input_key}", "").strip()
+    if val:
+        st.session_state.pending_input = val
 
 # ── 사이드바: 이전 질문 리스트 ───────────────────────────────────────────────
 with st.sidebar:
@@ -154,42 +161,33 @@ with st.sidebar:
 # ── 헤더 ──────────────────────────────────────────────────────────────────────
 st.title("📈 주식 AI 어시스턴트")
 
-# ── 입력 영역 (중앙 고정) ──────────────────────────────────────────────────────
+# ── 입력 영역 ─────────────────────────────────────────────────────────────────
 st.markdown('<div class="input-area"><span class="input-label">💬 주식에 관한 모든 것을 질문하세요</span></div>', unsafe_allow_html=True)
 
-with st.form(key=f"chat_form_{st.session_state.input_key}", clear_on_submit=True):
-    user_input = st.text_input(
-        label="질문",
-        placeholder="예) 삼성전자 지금 사도 될까요?  /  PER이 뭔가요?  /  오늘 시장 분위기 어때요?",
-        label_visibility="collapsed",
-    )
-    col_reset, col_spacer, col_btn = st.columns([1, 4, 1])
-    with col_btn:
-        submitted = st.form_submit_button("입력", type="secondary", use_container_width=True)
-    with col_reset:
-        reset = st.form_submit_button("초기화", type="secondary", use_container_width=True)
+st.text_input(
+    label="질문",
+    placeholder="예) 삼성전자 지금 사도 될까요?  /  PER이 뭔가요?  /  오늘 시장 분위기 어때요?",
+    label_visibility="collapsed",
+    key=f"input_{st.session_state.input_key}",
+    on_change=on_enter,
+)
 
-components.html("""
-<script>
-    const s = document.createElement('style');
-    s.innerHTML = `
-        .stFormSubmitButton button {
-            background-color: rgba(151,166,195,0.25) !important;
-            border: 1px solid rgba(151,166,195,0.5) !important;
-            color: #e6edf3 !important;
-        }
-    `;
-    window.parent.document.head.appendChild(s);
-</script>
-""", height=0)
+col_reset, col_spacer, col_btn = st.columns([1, 4, 1])
+with col_reset:
+    if st.button("초기화", use_container_width=True):
+        st.session_state.messages = [st.session_state.messages[0]]
+        st.session_state.pending_input = ""
+        st.session_state.input_key += 1
+        st.rerun()
+with col_btn:
+    if st.button("입력", use_container_width=True):
+        on_enter()
 
-if reset:
-    st.session_state.messages = [st.session_state.messages[0]]
-    st.session_state.input_key += 1
-    st.rerun()
-
-if submitted and user_input.strip():
-    st.session_state.messages.append({"role": "user", "content": user_input.strip()})
+# Enter 또는 입력 버튼으로 전송된 메시지 처리
+if st.session_state.pending_input:
+    text = st.session_state.pending_input
+    st.session_state.pending_input = ""
+    st.session_state.messages.append({"role": "user", "content": text})
     with st.spinner("분석 중..."):
         response = client.chat.completions.create(
             model=model,
