@@ -16,6 +16,11 @@ st.markdown("""
     .stApp { background-color: #0d1117; color: #e6edf3; }
     h1 { color: #00ff88 !important; text-align: center; }
 
+    /* 사이드바 배경 */
+    [data-testid="stSidebar"] {
+        background-color: #161b22 !important;
+    }
+
     /* 입력 폼 강조 */
     .input-area {
         background: linear-gradient(135deg, #161b22, #1a2332);
@@ -62,24 +67,26 @@ st.markdown("""
 
     /* 입력 버튼 (오른쪽) */
     div[data-testid="column"]:last-child .stFormSubmitButton button {
-        background-color: #00aa55 !important;
-        color: #ffffff !important;
-        border: 1.5px solid #00aa55 !important;
+        background-color: #161b22 !important;
+        color: #00ff88 !important;
+        border: 1.5px solid #00ff88 !important;
     }
     div[data-testid="column"]:last-child .stFormSubmitButton button:hover {
-        background-color: #007a3d !important;
-        border-color: #007a3d !important;
+        background-color: #00aa55 !important;
+        color: #ffffff !important;
+        border-color: #00aa55 !important;
     }
 
     /* 초기화 버튼 (왼쪽) */
     div[data-testid="column"]:first-child .stFormSubmitButton button {
-        background-color: #1f2937 !important;
-        color: #9ca3af !important;
-        border: 1px solid #374151 !important;
+        background-color: #161b22 !important;
+        color: #00ff88 !important;
+        border: 1.5px solid #00ff88 !important;
     }
     div[data-testid="column"]:first-child .stFormSubmitButton button:hover {
-        background-color: #374151 !important;
-        color: #e5e7eb !important;
+        background-color: #1f2937 !important;
+        color: #00ff88 !important;
+        border-color: #00ff88 !important;
     }
 
     /* 채팅 메시지 */
