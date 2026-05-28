@@ -52,7 +52,8 @@ st.markdown("""
     }
 
     /* 전송 버튼 */
-    button[data-testid="baseButton-secondaryFormSubmit"] {
+    .stFormSubmitButton button,
+    .stFormSubmitButton > div > button {
         background-color: #00aa55 !important;
         color: #ffffff !important;
         font-weight: 600 !important;
@@ -61,9 +62,12 @@ st.markdown("""
         font-size: 0.88rem !important;
         padding: 4px 16px !important;
     }
-    button[data-testid="baseButton-secondaryFormSubmit"]:hover,
-    button[data-testid="baseButton-secondaryFormSubmit"]:active,
-    button[data-testid="baseButton-secondaryFormSubmit"]:focus {
+    .stFormSubmitButton button:hover,
+    .stFormSubmitButton button:active,
+    .stFormSubmitButton button:focus,
+    .stFormSubmitButton > div > button:hover,
+    .stFormSubmitButton > div > button:active,
+    .stFormSubmitButton > div > button:focus {
         background-color: #007a3d !important;
         color: #ffffff !important;
         border-color: #007a3d !important;
@@ -103,7 +107,17 @@ except Exception:
     model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 
 if not api_key:
-    st.error("OPENAI_API_KEY가 설정되지 않았습니다. Streamlit Cloud Secrets 또는 .env 파일을 확인하세요.")
+    st.error("🔑 API 키가 없습니다.")
+    st.markdown("""
+    **Streamlit Cloud 설정 방법:**
+    1. 앱 우측 하단 **Manage app** 클릭
+    2. **Settings → Secrets** 탭 선택
+    3. 아래 내용 붙여넣기 후 **Save**
+    ```toml
+    OPENAI_API_KEY = "sk-proj-..."
+    OPENAI_MODEL = "gpt-4o-mini"
+    ```
+    """)
     st.stop()
 
 client = OpenAI(api_key=api_key)
