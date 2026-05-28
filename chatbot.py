@@ -172,6 +172,20 @@ st.text_input(
     on_change=on_enter,
 )
 
+components.html("""
+<script>
+    const s = document.createElement('style');
+    s.innerHTML = `
+        .stButton button {
+            background-color: rgba(151,166,195,0.25) !important;
+            border: 1px solid rgba(151,166,195,0.5) !important;
+            color: #e6edf3 !important;
+        }
+    `;
+    window.parent.document.head.appendChild(s);
+</script>
+""", height=0)
+
 col_reset, col_spacer, col_btn = st.columns([1, 4, 1])
 with col_reset:
     if st.button("초기화", use_container_width=True):
