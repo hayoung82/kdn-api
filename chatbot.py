@@ -138,7 +138,7 @@ with st.sidebar:
     st.markdown("### 📋 이전 질문 목록")
     questions = [m["content"] for m in st.session_state.messages if m["role"] == "user"]
     if questions:
-        for i, q in enumerate(reversed(questions), 1):
+        for q in questions[::-1]:
             st.markdown(f"""
             <div style="
                 background-color:#161b22;
@@ -151,9 +151,7 @@ with st.sidebar:
                 overflow:hidden;
                 text-overflow:ellipsis;
                 white-space:nowrap;
-            ">
-            {i}. {q[:40] + '...' if len(q) > 40 else q}
-            </div>
+            ">{q[:40] + '...' if len(q) > 40 else q}</div>
             """, unsafe_allow_html=True)
     else:
         st.markdown('<p style="color:#4b5563; font-size:0.82rem;">아직 질문이 없습니다.</p>', unsafe_allow_html=True)
