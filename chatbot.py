@@ -14,7 +14,10 @@ st.set_page_config(
 st.title("⚡ KDN AI 챗봇")
 st.caption("한전KDN AI 어시스턴트입니다. 무엇이든 질문해보세요.")
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+# Streamlit Cloud secrets 우선, 없으면 .env 사용
+api_key = st.secrets.get("OPENAI_API_KEY") or os.getenv("OPENAI_API_KEY")
+model = st.secrets.get("OPENAI_MODEL") or os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+client = OpenAI(api_key=api_key)
 
 if "messages" not in st.session_state:
     st.session_state.messages = [
@@ -38,7 +41,7 @@ if prompt := st.chat_input("메시지를 입력하세요..."):
     with st.chat_message("assistant"):
         with st.spinner("답변 생성 중..."):
             response = client.chat.completions.create(
-                model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
+                model=model,
                 messages=st.session_state.messages,
                 stream=True,
             )
