@@ -52,19 +52,17 @@ st.markdown("""
     }
 
     /* 전송 버튼 */
-    button[data-testid="baseButton-primaryFormSubmit"],
     button[data-testid="baseButton-secondaryFormSubmit"] {
         background-color: #ffffff !important;
         color: #00aa55 !important;
-        font-weight: 700 !important;
-        border: 2px solid #00aa55 !important;
-        border-radius: 10px !important;
-        font-size: 1rem !important;
-        width: 100%;
+        font-weight: 600 !important;
+        border: 1.5px solid #00aa55 !important;
+        border-radius: 8px !important;
+        font-size: 0.88rem !important;
+        padding: 4px 16px !important;
+        min-height: unset !important;
+        height: auto !important;
     }
-    button[data-testid="baseButton-primaryFormSubmit"]:hover,
-    button[data-testid="baseButton-primaryFormSubmit"]:active,
-    button[data-testid="baseButton-primaryFormSubmit"]:focus,
     button[data-testid="baseButton-secondaryFormSubmit"]:hover,
     button[data-testid="baseButton-secondaryFormSubmit"]:active,
     button[data-testid="baseButton-secondaryFormSubmit"]:focus {
@@ -142,7 +140,9 @@ with st.form(key=f"chat_form_{st.session_state.input_key}", clear_on_submit=True
         placeholder="예) 삼성전자 지금 사도 될까요?  /  PER이 뭔가요?  /  오늘 시장 분위기 어때요?",
         label_visibility="collapsed",
     )
-    submitted = st.form_submit_button("전송 ▶", type="primary", use_container_width=True)
+    col_spacer, col_btn = st.columns([5, 1])
+    with col_btn:
+        submitted = st.form_submit_button("전송 ▶", type="secondary")
 
 if submitted and user_input.strip():
     st.session_state.messages.append({"role": "user", "content": user_input.strip()})
