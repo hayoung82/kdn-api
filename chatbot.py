@@ -137,8 +137,9 @@ def on_enter():
 with st.sidebar:
     st.markdown("### 📋 이전 질문 목록")
     questions = [m["content"] for m in st.session_state.messages if m["role"] == "user"]
-    if questions:
-        for q in questions[::-1]:
+    recent_first = list(reversed(questions))
+    if recent_first:
+        for q in recent_first:
             st.markdown(f"""
             <div style="
                 background-color:#161b22;
@@ -219,12 +220,14 @@ if len(st.session_state.messages) == 1:
 </div>
 """, unsafe_allow_html=True)
 
-# ── 대화 히스토리 ─────────────────────────────────────────────────────────────
+# ── 대화 히스토리 (최신순) ────────────────────────────────────────────────────
 history = [m for m in st.session_state.messages if m["role"] != "system"]
 if history:
     st.markdown("---")
-    for msg in history:
-        with st.chat_message(msg["role"]):
-            st.markdown(msg["content"])
+    pairs = [history[i:i+2] for i in range(0, len(history), 2)]
+    for pair in reversed(pairs):
+        for msg in pair:
+            with st.chat_message(msg["role"]):
+                st.markdown(msg["content"])
 
 st.markdown('<div class="footer">⚠️ 본 서비스는 정보 제공 목적이며, 투자 결과에 대한 책임은 본인에게 있습니다.</div>', unsafe_allow_html=True)
