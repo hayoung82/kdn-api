@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 import streamlit as st
+import streamlit.components.v1 as components
 from openai import OpenAI
 
 load_dotenv()
@@ -167,6 +168,20 @@ with st.form(key=f"chat_form_{st.session_state.input_key}", clear_on_submit=True
         reset = st.form_submit_button("🔄 초기화", type="secondary")
     with col_btn:
         submitted = st.form_submit_button("입력", type="secondary")
+
+components.html("""
+<script>
+    const s = document.createElement('style');
+    s.innerHTML = `
+        .stFormSubmitButton button {
+            background-color: rgba(151,166,195,0.25) !important;
+            border: 1px solid rgba(151,166,195,0.5) !important;
+            color: #e6edf3 !important;
+        }
+    `;
+    window.parent.document.head.appendChild(s);
+</script>
+""", height=0)
 
 if reset:
     st.session_state.messages = [st.session_state.messages[0]]
