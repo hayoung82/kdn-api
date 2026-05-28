@@ -75,6 +75,9 @@ st.markdown("""
 
     /* 채팅 메시지 */
     .stChatMessage { background-color: #161b22 !important; border-radius: 12px; }
+    .stChatMessage p, .stChatMessage div, .stChatMessage span, .stChatMessage li {
+        color: #9ca3af !important;
+    }
 
     .metric-box {
         background: linear-gradient(135deg, #161b22, #1f2937);
@@ -166,8 +169,9 @@ if submitted and user_input.strip():
     st.session_state.input_key += 1
     st.rerun()
 
-# ── 예시 힌트 (항상 표시) ────────────────────────────────────────────────────
-st.markdown("""
+# ── 예시 힌트 (질문 없을 때만 표시) ──────────────────────────────────────────
+if len(st.session_state.messages) == 1:
+    st.markdown("""
 <div class="metric-box">
 💡 <b>이런 걸 물어보세요</b> &nbsp;|&nbsp;
 삼성전자 주가 전망 &nbsp;·&nbsp; PER이 뭐야? &nbsp;·&nbsp; 지금 시장 상황 어때? &nbsp;·&nbsp; 분산투자 전략 알려줘
